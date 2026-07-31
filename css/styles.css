@@ -721,3 +721,38 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .explore-btns{display:flex;gap:12px;flex-wrap:wrap}
 .btn-explore{flex:1;min-width:180px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:var(--txt);padding:12px 20px;border-radius:12px;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:.5px;transition:all .2s;text-transform:uppercase}
 .btn-explore:hover{border-color:var(--gold);color:var(--gold);background:rgba(245,158,11,.07);transform:translateY(-2px);box-shadow:0 4px 20px rgba(245,158,11,.15)}
+
+/* ── CODEX FOOTER BADGE ── */
+.codex-footer-badge {
+  position: fixed;
+  bottom: 12px;
+  right: 16px;
+  z-index: 999;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(9, 9, 11, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 99px;
+  backdrop-filter: blur(12px);
+  font-family: 'Fira Code', 'Inter', monospace;
+  font-size: 11px;
+  color: #94A3B8;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  transition: all 0.25s ease;
+  user-select: none;
+}
+.codex-footer-badge:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #F8FAFC;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.7);
+}
+.codex-icon {
+  fill: #10B981;
+  width: 14px;
+  height: 14px;
+  filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.5));
+}
+
