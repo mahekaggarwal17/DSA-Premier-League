@@ -112,6 +112,8 @@
     <button class="btn-back" onclick="showScreen('landing')">← Back</button>
     <h2 class="page-title">💻 Hands-On Code Arena</h2>
     <div class="lang-sel-wrap">
+      <label class="lang-lbl" for="code-problem-sel">Problem:</label>
+      <select id="code-problem-sel" class="code-lang-sel" onchange="changeCodeProblem(this.value)"></select>
       <label class="lang-lbl">Language:</label>
       <select id="code-lang-sel" class="code-lang-sel" onchange="changeLanguage(this.value)">
         <option value="javascript">🟨 JavaScript</option>
@@ -147,11 +149,12 @@
       <div class="editor-toolbar">
         <div class="et-left">
           <span class="et-lbl">📜 Code Solution</span>
+          <span class="code-execution-note" id="code-execution-note">JavaScript runs locally</span>
         </div>
         <div class="et-right">
           <button class="btn-ghost btn-sm" onclick="resetCodeTemplate()">🔄 Reset Code</button>
-          <button class="btn-primary btn-sm" onclick="runCode()">▶ Run Code</button>
-          <button class="btn-hero-p btn-sm" onclick="submitSolution()">🚀 Submit Solution</button>
+          <button class="btn-primary btn-sm" id="btn-run-code" onclick="runCode()">▶ Run Code</button>
+          <button class="btn-hero-p btn-sm" id="btn-submit-code" onclick="submitSolution()">🚀 Submit Solution</button>
         </div>
       </div>
 
@@ -187,7 +190,7 @@
       <div class="rule-card r-run"><div class="r-num" style="color:#F59E0B">1–3</div><div class="r-t">RUNS 🏃</div><p>Correct MCQ slower / Partial Test Cases Passed</p></div>
       <div class="rule-card r-out"><div class="r-num" style="color:#EF4444">W</div><div class="r-t">OUT 🔴</div><p>5 consecutive wrong answers</p></div>
     </div>
-    <h3 class="sec-lbl">Languages Supported</h3>
+    <h3 class="sec-lbl">Code Templates</h3>
     <div class="tp-row">
       <div class="tp easy-tp">🐍 Python</div>
       <div class="tp easy-tp">🟨 JavaScript</div>
@@ -199,8 +202,8 @@
     <div class="htp-modes">
       <div class="htp-m"><span>🎯</span><div><b>Practice</b><p>Solo · Build your skills</p></div></div>
       <div class="htp-m"><span>📅</span><div><b>Topic Schedule Fixtures</b><p>Play Topic-wise tournament matches</p></div></div>
-      <div class="htp-m"><span>💻</span><div><b>Code Arena (Program Writing)</b><p>Write solution code in Python, JS, C++, Java, Go, Rust</p></div></div>
-      <div class="htp-m"><span>⚔️</span><div><b>IPL Showoff</b><p>Up to 8 players · Best score wins</p></div></div>
+      <div class="htp-m"><span>💻</span><div><b>Code Arena</b><p>Run JavaScript locally · Use templates for 6 other languages</p></div></div>
+      <div class="htp-m"><span>⚔️</span><div><b>IPL Showoff</b><p>Local pass-and-play · Up to 8 players</p></div></div>
     </div>
   </div>
 </div>
@@ -294,8 +297,9 @@
     </div>
     <div class="setup-sec" id="sec-upload" style="display:none">
       <div class="setup-lbl">CUSTOM QUESTION SHEET</div>
-      <input class="inp" type="file" accept=".json,.csv" style="padding:10px">
-      <p style="font-size:12px;color:#475569;margin-top:8px">Upload a JSON or CSV file with your own questions.</p>
+      <input class="inp" id="question-sheet-input" type="file" accept=".json,.csv" onchange="handleUpload(event)" style="padding:10px">
+      <p style="font-size:12px;color:#475569;margin-top:8px">Upload JSON or CSV with question, options, correct, difficulty, category and explanation columns. Use <code>|</code> between CSV options.</p>
+      <p id="upload-status" class="upload-status" role="status" aria-live="polite"></p>
     </div>
     <div class="setup-sec">
       <div class="setup-lbl">TOPIC</div>

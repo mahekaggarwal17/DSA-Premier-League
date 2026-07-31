@@ -13,13 +13,13 @@ const CODE_ENGINE = {
 };
 
 const SUPPORTED_LANGUAGES = [
-  { id: 'javascript', name: 'JavaScript', icon: '🟨', extension: 'js' },
-  { id: 'python', name: 'Python 3', icon: '🐍', extension: 'py' },
-  { id: 'cpp', name: 'C++', icon: '⚡', extension: 'cpp' },
-  { id: 'java', name: 'Java', icon: '☕', extension: 'java' },
-  { id: 'csharp', name: 'C#', icon: '🟦', extension: 'cs' },
-  { id: 'go', name: 'Go', icon: '🐹', extension: 'go' },
-  { id: 'rust', name: 'Rust', icon: '🦀', extension: 'rs' }
+  { id: 'javascript', name: 'JavaScript', icon: '🟨', extension: 'js', executable: true },
+  { id: 'python', name: 'Python 3', icon: '🐍', extension: 'py', executable: false },
+  { id: 'cpp', name: 'C++', icon: '⚡', extension: 'cpp', executable: false },
+  { id: 'java', name: 'Java', icon: '☕', extension: 'java', executable: false },
+  { id: 'csharp', name: 'C#', icon: '🟦', extension: 'cs', executable: false },
+  { id: 'go', name: 'Go', icon: '🐹', extension: 'go', executable: false },
+  { id: 'rust', name: 'Rust', icon: '🦀', extension: 'rs', executable: false }
 ];
 
 // Initialize Code Arena UI with problem and language
@@ -60,6 +60,10 @@ function loadCodeProblem(problemId, language = 'javascript') {
       `<option value="${l.id}" ${l.id === language ? 'selected' : ''}>${l.icon} ${l.name}</option>`
     ).join('');
   }
+  const problemSel = document.getElementById('code-problem-sel');
+  if(problemSel){
+    problemSel.innerHTML=CODING_PROBLEMS.map(p=>`<option value="${p.id}" ${p.id===problem.id?'selected':''}>${p.topic} · ${p.title}</option>`).join('');
+  }
 
   // Load starter template if user hasn't edited code
   const codeEditor = document.getElementById('code-textarea');
@@ -74,9 +78,16 @@ function loadCodeProblem(problemId, language = 'javascript') {
 
   // Reset Console output
   resetConsole();
+  updateExecutionState();
+}
+
+function changeCodeProblem(problemId) {
+  handleCodeInput();
+  loadCodeProblem(problemId, CODE_ENGINE.currentLanguage);
 }
 
 function changeLanguage(newLang) {
+  handleCodeInput();
   CODE_ENGINE.currentLanguage = newLang;
   const problem = CODE_ENGINE.currentProblem;
   if (!problem) return;
@@ -90,6 +101,19 @@ function changeLanguage(newLang) {
     codeEditor.value = template;
     updateLineNumbers();
   }
+  resetConsole();
+  updateExecutionState();
+}
+
+function updateExecutionState() {
+  const language = SUPPORTED_LANGUAGES.find(l => l.id === CODE_ENGINE.currentLanguage);
+  const note = document.getElementById('code-execution-note');
+  const runButton = document.getElementById('btn-run-code');
+  const submitButton = document.getElementById('btn-submit-code');
+  if (!language) return;
+  if (note) note.textContent = language.executable ? 'JavaScript runs locally' : 'Template mode · execution requires a server runner';
+  if (runButton) runButton.textContent = language.executable ? '▶ Run Code' : 'ⓘ Template mode';
+  if (submitButton) submitButton.disabled = !language.executable;
 }
 
 function handleCodeInput() {
@@ -162,6 +186,11 @@ function runCode() {
 
   logToConsole(`⚡ Running solution in ${lang.toUpperCase()}...`, 'info');
 
+  if (lang !== 'javascript') {
+    logToConsole(`${lang.toUpperCase()} templates can be edited here, but this static site only executes JavaScript locally. Connect a secure server-side runner to execute this language.`, 'warning');
+    return { passedCount: 0, total: problem.testCases.length, isAllPassed: false, unsupported: true };
+  }
+
   const startTime = performance.now();
   let passedCount = 0;
   const total = problem.testCases.length;
@@ -192,10 +221,6 @@ function runCode() {
         actualVal = runFn(inputArgs);
         isSuccess = JSON.stringify(actualVal) === expected;
 
-      } else {
-        // Intelligent multi-language logic validator for Python, C++, Java, C#, Go, Rust
-        isSuccess = evaluateMultiLanguageCode(userCodeStr, lang, problem, tc);
-        actualVal = isSuccess ? tc.expected : 'Execution output verified';
       }
 
       if (isSuccess) {
@@ -232,44 +257,6 @@ function submitSolution() {
   } else {
     logToConsole(`⚠️ Solution incomplete. Fix failing test cases and submit again!`, 'warning');
   }
-}
-
-// Multi-language structural & logic validator
-function evaluateMultiLanguageCode(code, lang, problem, testCase) {
-  if (!code || code.trim().length < 15) return false;
-
-  // Basic syntax check per language
-  if (lang === 'python' && !code.includes('def ')) return false;
-  if (lang === 'cpp' && (!code.includes('class Solution') && !code.includes('vector') && !code.includes('int '))) return false;
-  if (lang === 'java' && (!code.includes('class Solution') && !code.includes('public '))) return false;
-  if (lang === 'csharp' && (!code.includes('public class Solution') && !code.includes('public '))) return false;
-  if (lang === 'go' && (!code.includes('func ') && !code.includes('package main'))) return false;
-  if (lang === 'rust' && (!code.includes('pub fn ') && !code.includes('fn '))) return false;
-
-  // Execute fallback JS logic to verify correctness
-  if (problem.templates && problem.templates.javascript) {
-    try {
-      const fnName = problem.id === 'cp_arr_1' ? 'twoSum' :
-                     problem.id === 'cp_arr_2' ? 'maxSubArray' :
-                     problem.id === 'cp_str_1' ? 'isAnagram' :
-                     problem.id === 'cp_ll_1' ? 'reverseList' :
-                     problem.id === 'cp_tree_1' ? 'maxDepth' :
-                     problem.id === 'cp_dp_1' ? 'climbStairs' :
-                     problem.id === 'cp_bs_1' ? 'search' : 'isValid';
-
-      const runFn = new Function('inputArgs', `
-        ${problem.templates.javascript}
-        return ${fnName}.apply(null, inputArgs);
-      `);
-
-      const jsRes = runFn(testCase.input);
-      return JSON.stringify(jsRes) === JSON.stringify(testCase.expected);
-    } catch(e) {
-      return true;
-    }
-  }
-
-  return true;
 }
 
 if (typeof module !== 'undefined' && module.exports) {

@@ -16,7 +16,7 @@
   - **FOUR (4 Runs)**: Correct answer submitted in the first 65% of the delivery timer.
   - **1–3 RUNS**: Correct answer submitted in the remaining time window.
   - **OUT (WICKET)**: Triggered after 5 consecutive wrong or missed deliveries.
-- **Game Modes**: Solo Practice Match, IPL Showoff (2–8 player multiplayer), Team Battle mode, and Custom JSON Question Sheet loader.
+- **Game Modes**: Solo Practice Match, local pass-and-play IPL Showoff (2–8 players), Team Battle mode, and custom JSON/CSV question-sheet loading.
 - **DSA Question Bank**: 70+ verified Data Structures & Algorithms questions spanning 12 core computer science categories (Arrays, Trees, Graphs, DP, Sorting, etc.).
 
 ---
@@ -24,7 +24,7 @@
 ## 💻 Tech Stack & Architecture
 - **Engine**: Pure Vanilla JavaScript (ES6+) with zero external framework dependencies.
 - **Styling**: Modern CSS3 Glassmorphism with hardware-accelerated animations.
-- **Architecture**: Modular game loop, state management, and custom problem execution engine.
+- **Architecture**: Modular game loop, state management, a local JavaScript problem runner, and language templates for Python, C++, Java, C#, Go, and Rust.
 - **AI Tooling**: Generated & structured using OpenAI Codex.
 
 ---

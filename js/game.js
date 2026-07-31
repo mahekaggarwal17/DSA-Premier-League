@@ -186,16 +186,51 @@ function rmPlayer(i){G.players.splice(i,1);renderPlayers();}
 function selCat(el,v){G.cat=v;document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');}
 function selDiff(el,v){G.diff=v;document.querySelectorAll('.dtab').forEach(d=>d.classList.remove('active'));el.classList.add('active');}
 
+function parseCsvRows(text){
+  const rows=[]; let row=[]; let cell=''; let quoted=false;
+  for(let i=0;i<text.length;i++){
+    const ch=text[i], next=text[i+1];
+    if(ch==='"'&&quoted&&next==='"'){cell+='"';i++;continue;}
+    if(ch==='"'){quoted=!quoted;continue;}
+    if(ch===','&&!quoted){row.push(cell.trim());cell='';continue;}
+    if((ch==='\n'||ch==='\r')&&!quoted){if(ch==='\r'&&next==='\n')i++;row.push(cell.trim());if(row.some(Boolean))rows.push(row);row=[];cell='';continue;}
+    cell+=ch;
+  }
+  row.push(cell.trim()); if(row.some(Boolean))rows.push(row);
+  return rows;
+}
+
+function normaliseCustomQuestions(items){
+  if(!Array.isArray(items)||items.length<5) throw new Error('Add at least 5 questions.');
+  return items.map((item,index)=>{
+    const options=Array.isArray(item.options)?item.options:item.options?.split('|').map(v=>v.trim());
+    const correct=Number(item.correct);
+    if(!item.question||!Array.isArray(options)||options.length<2||!Number.isInteger(correct)||correct<0||correct>=options.length){
+      throw new Error(`Question ${index+1} needs a question, options, and a valid zero-based correct answer.`);
+    }
+    return {question:item.question,options,correct,difficulty:(item.difficulty||'easy').toLowerCase(),category:item.category||'Custom',explanation:item.explanation||'Review the concept and try the next delivery.'};
+  });
+}
+
 function handleUpload(ev){
   const f=ev.target.files[0]; if(!f) return;
+  const status=document.getElementById('upload-status');
+  if(status) status.textContent='Reading question sheet…';
   const r=new FileReader();
   r.onload=e=>{
     try{
-      const d=JSON.parse(e.target.result);
-      if(!Array.isArray(d)||d.length<5) throw new Error('Need ≥5 questions');
-      G.customQ=d;
-      document.getElementById('upload-status').textContent=`✅ ${d.length} questions from "${f.name}"`;
-    }catch(err){alert('Invalid JSON: '+err.message);}
+      const raw=e.target.result;
+      const items=f.name.toLowerCase().endsWith('.csv')?(()=>{
+        const [headers,...rows]=parseCsvRows(raw);
+        if(!headers?.length) throw new Error('CSV needs a header row.');
+        return rows.map(row=>Object.fromEntries(headers.map((header,i)=>[header.trim().toLowerCase(),row[i]||''])));
+      })():JSON.parse(raw);
+      G.customQ=normaliseCustomQuestions(items);
+      if(status) status.textContent=`✅ ${G.customQ.length} questions loaded from "${f.name}"`;
+    }catch(err){
+      G.customQ=null;
+      if(status) status.textContent=`⚠️ Could not load sheet: ${err.message}`;
+    }
   };
   r.readAsText(f);
 }
