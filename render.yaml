@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: dsa-premier-league
+    env: static
+    buildCommand: ""
+    staticPublishPath: ./
