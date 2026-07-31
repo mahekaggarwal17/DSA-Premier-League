@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DSA Premier League 🏏 — Code Like a Champion!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Orbitron:wght@400;700;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/styles.css">
+  <link rel="stylesheet" href="./css/inner-pages.css">
+  <link rel="stylesheet" href="./css/team-select.css">
+</head>
+<body>
+  <div class="cricket-field">
+    <div class="field-oval">
+      <div class="field-grass"></div>
+      <div class="boundary-rope"></div>
+      <div class="infield-circle"></div>
+      <div class="pitch">
+        <div class="pitch-crease top-crease"></div>
+        <div class="pitch-mid-line"></div>
+        <div class="pitch-crease bot-crease"></div>
+      </div>
+    </div>
+    <div class="fl fl-tl"><div class="fl-post"></div><div class="fl-light"></div></div>
+    <div class="fl fl-tr"><div class="fl-post"></div><div class="fl-light"></div></div>
+    <div class="fl fl-bl"><div class="fl-post"></div><div class="fl-light"></div></div>
+    <div class="fl fl-br"><div class="fl-post"></div><div class="fl-light"></div></div>
+    <div class="crowd-row"></div>
+    <div class="particles" id="particles"></div>
+    <div class="c-ball" id="c-ball"></div>
+  </div>
+
+<div id="screen-landing" class="screen active">
+  <div class="landing-ov">
+    <div class="lhero">
+      <div class="trophy-ico">🏆</div>
+      <h1 class="game-title"><span class="gt-dsa">DSA</span><span class="gt-pl">PREMIER LEAGUE</span></h1>
+      <p class="game-tag">Code Like a Champion · Play Like a Team</p>
+      <div class="hero-stats">
+        <div class="hst"><span class="hst-n">8</span><span class="hst-l">Teams</span></div>
+        <span class="hst-sep">|</span>
+        <div class="hst"><span class="hst-n">10</span><span class="hst-l">Topic Matches</span></div>
+        <span class="hst-sep">|</span>
+        <div class="hst"><span class="hst-n">7</span><span class="hst-l">Languages</span></div>
+      </div>
+      <div class="hero-btns">
+        <button class="btn-hero-p" onclick="showScreen('team-select')"><span class="btn-shine"></span>🏏 Start Match</button>
+        <button class="btn-hero-g" onclick="showScreen('how-to-play')">📖 How to Play</button>
+      </div>
+      <div class="ticker-bar">
+        <span class="tb-item">CK: 182/4 (20)</span>
+        <span class="tb-sep">·</span>
+        <span class="tb-item gold">MM: 165/7 (20)</span>
+        <span class="tb-sep">·</span>
+        <span class="tb-item">KW: 198/2 (20)</span>
+        <span class="tb-sep">·</span>
+        <span class="tb-item">HB: 154/9 (20)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="screen-schedule" class="screen">
+  <div class="inner-bg"></div>
+  <div class="page-hdr">
+    <button class="btn-back" onclick="showScreen('landing')">← Back</button>
+    <h2 class="page-title">📅 Competition Matches Schedule & League Fixtures</h2>
+  </div>
+  <div class="schedule-body">
+    <div class="sec-lbl">TOPIC MATCH FIXTURES</div>
+    <div class="pill-row" id="sched-pills" style="margin-bottom:20px">
+      <button class="pill active" onclick="filterScheduleTopic(this, 'all')">All Topics</button>
+      <button class="pill" onclick="filterScheduleTopic(this, 'Arrays')">Arrays</button>
+      <button class="pill" onclick="filterScheduleTopic(this, 'Strings')">Strings</button>
+      <button class="pill" onclick="filterScheduleTopic(this, 'Linked Lists')">Linked Lists</button>
+      <button class="pill" onclick="filterScheduleTopic(this, 'Trees')">Trees</button>
+      <button class="pill" onclick="filterScheduleTopic(this, 'Graphs')">Graphs</button>
+      <button class="pill" onclick="filterScheduleTopic(this, 'Dynamic Programming')">DP</button>
+      <button class="pill" onclick="filterScheduleTopic(this, 'Binary Search')">Binary Search</button>
+      <button class="pill" onclick="filterScheduleTopic(this, 'Stack & Queue')">Stack/Queue</button>
+      <button class="pill" onclick="filterScheduleTopic(this, 'Heaps')">Heaps</button>
+    </div>
+
+    <div class="schedule-fixtures-grid" id="schedule-fixtures-grid"></div>
+
+    <div class="sec-lbl" style="margin-top:36px">LEAGUE POINTS TABLE & STANDINGS</div>
+    <div class="standings-card">
+      <table class="standings-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Team</th>
+            <th>P</th>
+            <th>W</th>
+            <th>L</th>
+            <th>PTS</th>
+            <th>NRR</th>
+          </tr>
+        </thead>
+        <tbody id="standings-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="screen-code-arena" class="screen">
+  <div class="inner-bg"></div>
+  <div class="page-hdr">
+    <button class="btn-back" onclick="showScreen('landing')">← Back</button>
+    <h2 class="page-title">💻 Hands-On Code Arena</h2>
+    <div class="lang-sel-wrap">
+      <label class="lang-lbl">Language:</label>
+      <select id="code-lang-sel" class="code-lang-sel" onchange="changeLanguage(this.value)">
+        <option value="javascript">🟨 JavaScript</option>
+        <option value="python">🐍 Python 3</option>
+        <option value="cpp">⚡ C++</option>
+        <option value="java">☕ Java</option>
+        <option value="csharp">🟦 C#</option>
+        <option value="go">🐹 Go</option>
+        <option value="rust">🦀 Rust</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="code-arena-layout">
+    <!-- LEFT PANE: PROBLEM STATEMENT -->
+    <div class="problem-pane">
+      <div class="problem-meta">
+        <span id="cp-topic" class="q-cat-badge">Arrays</span>
+        <span id="cp-diff" class="diff-badge easy">EASY</span>
+      </div>
+      <h2 id="cp-title" class="cp-title">Two Sum Match Winner</h2>
+      <div id="cp-desc" class="cp-desc"></div>
+      
+      <div class="sec-lbl">CONSTRAINTS</div>
+      <div id="cp-constraints" class="cp-constraints"></div>
+
+      <div class="sec-lbl">EXAMPLES</div>
+      <div id="cp-examples" class="cp-examples"></div>
+    </div>
+
+    <!-- RIGHT PANE: CODE EDITOR & CONSOLE -->
+    <div class="editor-pane">
+      <div class="editor-toolbar">
+        <div class="et-left">
+          <span class="et-lbl">📜 Code Solution</span>
+        </div>
+        <div class="et-right">
+          <button class="btn-ghost btn-sm" onclick="resetCodeTemplate()">🔄 Reset Code</button>
+          <button class="btn-primary btn-sm" onclick="runCode()">▶ Run Code</button>
+          <button class="btn-hero-p btn-sm" onclick="submitSolution()">🚀 Submit Solution</button>
+        </div>
+      </div>
+
+      <div class="editor-wrapper">
+        <div id="line-gutter" class="line-gutter">1</div>
+        <textarea id="code-textarea" class="code-textarea" spellcheck="false" oninput="handleCodeInput()"></textarea>
+      </div>
+
+      <!-- CONSOLE & LOG OUTPUT -->
+      <div class="console-pane">
+        <div class="console-hdr">
+          <span class="console-ttl">🖥️ Console Output & Test Cases</span>
+          <button class="btn-ghost btn-sm" onclick="resetConsole()">Clear Logs</button>
+        </div>
+        <div id="console-output" class="console-output"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="screen-how-to-play" class="screen">
+  <div class="inner-bg"></div>
+  <div class="page-hdr">
+    <button class="btn-back" onclick="showScreen('landing')">← Back</button>
+    <h2 class="page-title">📖 How to Play</h2>
+  </div>
+  <div class="page-body">
+    <p class="htp-intro">Every DSA question is a <strong>delivery</strong>. Answer fast and correctly or write working code to score big. 5 consecutive zeros and you are <strong>OUT!</strong></p>
+    <h3 class="sec-lbl">Scoring</h3>
+    <div class="rules-grid">
+      <div class="rule-card r-six"><div class="r-num" style="color:#22C55E">6</div><div class="r-t">SIX ⚡</div><p>Correct MCQ / All Test Cases Passed fast</p></div>
+      <div class="rule-card r-four"><div class="r-num" style="color:#3B82F6">4</div><div class="r-t">FOUR 🏏</div><p>Correct MCQ / Working Code Solution</p></div>
+      <div class="rule-card r-run"><div class="r-num" style="color:#F59E0B">1–3</div><div class="r-t">RUNS 🏃</div><p>Correct MCQ slower / Partial Test Cases Passed</p></div>
+      <div class="rule-card r-out"><div class="r-num" style="color:#EF4444">W</div><div class="r-t">OUT 🔴</div><p>5 consecutive wrong answers</p></div>
+    </div>
+    <h3 class="sec-lbl">Languages Supported</h3>
+    <div class="tp-row">
+      <div class="tp easy-tp">🐍 Python</div>
+      <div class="tp easy-tp">🟨 JavaScript</div>
+      <div class="tp med-tp">⚡ C++</div>
+      <div class="tp med-tp">☕ Java</div>
+      <div class="tp hard-tp">🟦 C# / 🐹 Go / 🦀 Rust</div>
+    </div>
+    <h3 class="sec-lbl">Modes</h3>
+    <div class="htp-modes">
+      <div class="htp-m"><span>🎯</span><div><b>Practice</b><p>Solo · Build your skills</p></div></div>
+      <div class="htp-m"><span>📅</span><div><b>Topic Schedule Fixtures</b><p>Play Topic-wise tournament matches</p></div></div>
+      <div class="htp-m"><span>💻</span><div><b>Code Arena (Program Writing)</b><p>Write solution code in Python, JS, C++, Java, Go, Rust</p></div></div>
+      <div class="htp-m"><span>⚔️</span><div><b>IPL Showoff</b><p>Up to 8 players · Best score wins</p></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="screen-team-select" class="screen">
+  <div class="inner-bg"></div>
+
+  <!-- TOP NAV BAR -->
+  <div class="ts-topbar">
+    <button class="btn-back" onclick="showScreen('landing')">← Back</button>
+    <div class="ts-topbar-title">
+      <span class="ts-topbar-ico">🏟️</span>
+      <span>Choose Your Team</span>
+    </div>
+    <div class="ts-topbar-step">Step 1 of 3</div>
+  </div>
+
+  <div class="ts-layout">
+
+    <!-- LEFT: TEAM PREVIEW HERO PANEL -->
+    <div class="ts-hero-panel" id="ts-hero-panel">
+      <div class="ts-hero-spotlight" id="ts-spotlight"></div>
+      <div class="ts-hero-content">
+        <div class="ts-hero-logo" id="ts-hero-logo">🏆</div>
+        <div class="ts-hero-shortname" id="ts-hero-shortname">—</div>
+        <div class="ts-hero-fullname" id="ts-hero-fullname">Select a Team</div>
+        <div class="ts-hero-city" id="ts-hero-city">← Pick from the grid</div>
+        <div class="ts-hero-tagline" id="ts-hero-tagline">Your adventure awaits</div>
+        <div class="ts-hero-badges" id="ts-hero-badges">
+          <div class="ts-badge ts-badge-city" id="ts-b-city">—</div>
+          <div class="ts-badge ts-badge-rank" id="ts-b-rank">Rank #—</div>
+          <div class="ts-badge ts-badge-lang" id="ts-b-lang">Ready to Code</div>
+        </div>
+        <button class="ts-join-btn" id="ts-join-btn" onclick="confirmTeam()" disabled>
+          <span class="ts-join-shine"></span>
+          <span class="ts-join-ico">🏏</span>
+          <span class="ts-join-txt">Join Team</span>
+          <span class="ts-join-arrow">→</span>
+        </button>
+      </div>
+      <div class="ts-hero-decor">
+        <div class="ts-decor-ring ts-ring-1"></div>
+        <div class="ts-decor-ring ts-ring-2"></div>
+        <div class="ts-decor-ring ts-ring-3"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: TEAM GRID -->
+    <div class="ts-grid-panel">
+      <div class="ts-grid-hdr">
+        <span class="ts-grid-count">8 Teams · Pick Yours</span>
+        <span class="ts-grid-hint">Tap to preview ·  select to join</span>
+      </div>
+      <div class="ts-teams-grid" id="teams-grid"></div>
+    </div>
+
+  </div>
+</div>
+
+
+<div id="screen-setup" class="screen">
+  <div class="inner-bg"></div>
+  <div class="page-hdr">
+    <button class="btn-back" onclick="showScreen('team-select')">← Back</button>
+    <h2 class="page-title">⚙️ Match Setup</h2>
+    <div id="setup-badge" class="setup-badge"></div>
+  </div>
+  <div class="setup-body">
+    <div class="setup-sec">
+      <div class="setup-lbl">GAME MODE</div>
+      <div class="mode-grid">
+        <div class="mode-card" data-mode="practice" onclick="selectMode('practice')"><div class="mc-i">🎯</div><div class="mc-n">Practice</div><div class="mc-d">Solo</div></div>
+        <div class="mode-card" data-mode="contest" onclick="selectMode('contest')"><div class="mc-i">⚔️</div><div class="mc-n">IPL Showoff</div><div class="mc-d">2-8 players</div></div>
+        <div class="mode-card" data-mode="team" onclick="selectMode('team')"><div class="mc-i">👥</div><div class="mc-n">Team Battle</div><div class="mc-d">Squad scores</div></div>
+        <div class="mode-card" data-mode="upload" onclick="selectMode('upload')"><div class="mc-i">📤</div><div class="mc-n">Custom Sheet</div><div class="mc-d">Your questions</div></div>
+      </div>
+    </div>
+    <div class="setup-sec" id="sec-solo">
+      <div class="setup-lbl">YOUR NAME</div>
+      <input class="inp" id="solo-inp" type="text" placeholder="Enter your name…" oninput="G.players[0].name=this.value">
+    </div>
+    <div class="setup-sec" id="sec-players" style="display:none">
+      <div class="setup-lbl">PLAYERS</div>
+      <div id="player-list"></div>
+      <button class="btn-add" onclick="addPlayer()">＋ Add Player</button>
+    </div>
+    <div class="setup-sec" id="sec-upload" style="display:none">
+      <div class="setup-lbl">CUSTOM QUESTION SHEET</div>
+      <input class="inp" type="file" accept=".json,.csv" style="padding:10px">
+      <p style="font-size:12px;color:#475569;margin-top:8px">Upload a JSON or CSV file with your own questions.</p>
+    </div>
+    <div class="setup-sec">
+      <div class="setup-lbl">TOPIC</div>
+      <div class="pill-row">
+        <button class="pill active" onclick="selCat(this,'all')">All</button>
+        <button class="pill" onclick="selCat(this,'Arrays')">Arrays</button>
+        <button class="pill" onclick="selCat(this,'Strings')">Strings</button>
+        <button class="pill" onclick="selCat(this,'Linked Lists')">Linked Lists</button>
+        <button class="pill" onclick="selCat(this,'Trees')">Trees</button>
+        <button class="pill" onclick="selCat(this,'Graphs')">Graphs</button>
+        <button class="pill" onclick="selCat(this,'Dynamic Programming')">DP</button>
+        <button class="pill" onclick="selCat(this,'Sorting')">Sorting</button>
+        <button class="pill" onclick="selCat(this,'Hashing')">Hashing</button>
+        <button class="pill" onclick="selCat(this,'Stack & Queue')">Stack/Queue</button>
+        <button class="pill" onclick="selCat(this,'Binary Search')">Binary Search</button>
+        <button class="pill" onclick="selCat(this,'Heaps')">Heaps</button>
+      </div>
+    </div>
+    <div class="setup-sec">
+      <div class="setup-lbl">DIFFICULTY</div>
+      <div class="diff-tabs">
+        <button class="dtab active" onclick="selDiff(this,'all')">Mixed</button>
+        <button class="dtab" onclick="selDiff(this,'easy')">Easy 🟢</button>
+        <button class="dtab" onclick="selDiff(this,'medium')">Medium 🟡</button>
+        <button class="dtab" onclick="selDiff(this,'hard')">Hard 🔴</button>
+      </div>
+    </div>
+    <div class="setup-start">
+      <button class="btn-start" onclick="startMatch()">🏏 Start Match!</button>
+    </div>
+    <div class="setup-explore">
+      <div class="explore-lbl">EXPLORE MORE</div>
+      <div class="explore-btns">
+        <button class="btn-explore" onclick="showScreen('schedule')">📅 Topic Schedule &amp; Fixtures</button>
+        <button class="btn-explore" onclick="showScreen('code-arena')">💻 Code Arena (Hands-on)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="screen-game" class="screen screen-game">
+  <div class="inner-bg"></div>
+  <div class="scoreboard" style="position:relative;z-index:3;">
+    <div class="sb-l">
+      <div id="team-badge" class="team-badge">CK</div>
+      <div>
+        <div id="sb-runs" class="sb-runs">0</div>
+        <div id="sb-balls" class="sb-balls">0 balls</div>
+      </div>
+    </div>
+    <div class="sb-c">
+      <div id="del-track" class="del-track"></div>
+      <div id="batting-name" class="batting-name">Player</div>
+      <div class="match-mode-toggle" style="margin-top:4px">
+        <button class="mmt-btn active" id="btn-mode-mcq" onclick="toggleMatchDeliveryMode('mcq')">⚡ MCQ Strike</button>
+        <button class="mmt-btn" id="btn-mode-code" onclick="toggleMatchDeliveryMode('code')">💻 Code Blitz</button>
+      </div>
+    </div>
+    <div class="sb-r">
+      <div class="tmr-wrap">
+        <svg class="tmr-svg" viewBox="0 0 60 60">
+          <circle class="tmr-bg" cx="30" cy="30" r="26"/>
+          <circle id="tmr-arc" class="tmr-arc" cx="30" cy="30" r="26" stroke-dasharray="163.4" stroke-dashoffset="0"/>
+        </svg>
+        <span id="tmr-num" class="tmr-num">30</span>
+      </div>
+      <button class="btn-end-inn" onclick="endInnEarly()" title="End Innings">🏁</button>
+    </div>
+  </div>
+
+  <div class="q-area" id="q-area">
+    <div class="q-meta">
+      <span id="q-cat" class="q-cat-badge">Arrays</span>
+      <span id="q-diff" class="diff-badge">Easy</span>
+      <span id="q-num" class="q-num">#1</span>
+    </div>
+    <div id="q-text" class="q-text"></div>
+    <div class="opts-grid" id="opts-grid"></div>
+    <div id="expl-box" class="expl-box" style="display:none">
+      <div class="expl-hdr">
+        <span id="expl-ico">✅</span>
+        <span id="expl-ttl" class="expl-ttl">Correct!</span>
+      </div>
+      <p id="expl-body" class="expl-body"></p>
+      <button id="btn-next" class="btn-primary btn-next-q" onclick="nextQ()">Next Delivery →</button>
+    </div>
+  </div>
+
+  <div class="fail-bar">
+    <span class="fail-lbl">MISSES</span>
+    <div class="fail-dots">
+      <div class="fd" data-i="0"></div>
+      <div class="fd" data-i="1"></div>
+      <div class="fd" data-i="2"></div>
+      <div class="fd" data-i="3"></div>
+      <div class="fd" data-i="4"></div>
+    </div>
+    <span class="fail-lbl" style="color:#EF4444">= OUT</span>
+  </div>
+</div>
+
+<div id="screen-results" class="screen">
+  <div class="inner-bg"></div>
+  <div class="results-top">
+    <div id="winner-ann" class="winner-ann"></div>
+  </div>
+  <div class="results-body">
+    <h3 class="sec-lbl">Scorecard</h3>
+    <div id="scorecard" class="scorecard"></div>
+    <div class="results-acts">
+      <button class="btn-primary" onclick="playAgain()">🔄 Play Again</button>
+      <button class="btn-ghost" onclick="showScreen('schedule')">📅 Topic Schedule</button>
+      <button class="btn-ghost" onclick="showScreen('landing')">🏠 Home</button>
+    </div>
+  </div>
+</div>
+
+<div id="score-anim" style="display:none;opacity:0;pointer-events:none;position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:1000">
+  <div id="anim-badge" style="font-family:'Orbitron',sans-serif;font-size:120px;font-weight:900;line-height:1">6</div>
+  <div id="anim-lbl" style="font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700;letter-spacing:6px;margin-top:8px">SIX!</div>
+</div>
+
+<div id="out-ov" class="out-ov" style="display:none">
+  <div class="out-card">
+    <div style="font-size:64px;animation:wobble .5s ease">🏏</div>
+    <h1 class="out-title">OUT!</h1>
+    <div id="out-pname" style="font-family:'Rajdhani';font-size:22px;color:#94A3B8;margin-bottom:20px">Player</div>
+    <div class="out-sg">
+      <div class="os"><div id="out-runs" class="os-v">0</div><div class="os-l">Runs</div></div>
+      <div class="os"><div id="out-balls" class="os-v">0</div><div class="os-l">Balls</div></div>
+      <div class="os"><div id="out-6s" class="os-v">0</div><div class="os-l">⚡ Sixes</div></div>
+      <div class="os"><div id="out-4s" class="os-v">0</div><div class="os-l">🏏 Fours</div></div>
+    </div>
+    <button id="btn-out-next" class="btn-primary" style="width:100%;margin-top:20px">Next →</button>
+    <button class="btn-ghost btn-sm" onclick="endInnEarly()" style="margin-top:8px">Skip to Results</button>
+  </div>
+</div>
+
+<script src="./js/teams.js"></script>
+<script src="./js/questions.js"></script>
+<script src="./js/coding_problems.js"></script>
+<script src="./js/schedule.js"></script>
+<script src="./js/coding_engine.js"></script>
+<script src="./js/game.js"></script>
+</body>
+</html>

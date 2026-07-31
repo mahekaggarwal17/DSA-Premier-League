@@ -1,0 +1,729 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   DSA PREMIER LEAGUE — INNER PAGES PREMIUM REDESIGN
+   Each inner screen gets its own animated background layer + polished UI
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── SHARED INNER-PAGE CANVAS ───────────────────────────────────────────── */
+.screen:not(#screen-landing) {
+  background: rgba(3, 4, 12, 0.97);
+}
+
+/* Each inner screen has a fixed pseudo-bg layer via a wrapping ::before on a
+   data-bg attribute, achieved by adding a .inner-bg div inside each screen */
+.inner-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* All content inside inner screens sits above the bg */
+.screen:not(#screen-landing) > *:not(.inner-bg) {
+  position: relative;
+  z-index: 2;
+}
+
+/* Game screen is flex — all direct children need proper stacking */
+#screen-game > *:not(.inner-bg) {
+  position: relative;
+  z-index: 3;
+}
+
+/* ── IMPROVED PAGE HEADER ──────────────────────────────────────────────────*/
+.page-hdr {
+  padding: 18px 28px !important;
+  background: rgba(4, 4, 18, 0.75) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 8px 40px rgba(0,0,0,0.6) !important;
+}
+.page-hdr::before {
+  height: 2px !important;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent) !important;
+  opacity: 1 !important;
+}
+.page-title {
+  font-size: 22px !important;
+  font-weight: 800 !important;
+  background: linear-gradient(135deg, #fff 60%, rgba(245,158,11,0.7));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 1.5px !important;
+}
+.btn-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  color: #94A3B8 !important;
+  padding: 7px 16px !important;
+  border-radius: 99px !important;
+  font-size: 13px !important;
+  transition: all 0.2s !important;
+}
+.btn-back:hover {
+  background: rgba(245,158,11,0.08) !important;
+  border-color: rgba(245,158,11,0.3) !important;
+  color: var(--gold) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TEAM SELECT — COSMIC INDIGO NEBULA BACKGROUND
+   ═══════════════════════════════════════════════════════════════════════════ */
+#screen-team-select .inner-bg {
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 20%, rgba(99,102,241,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 85% 80%, rgba(139,92,246,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 50% 50%, rgba(30,27,75,0.4) 0%, transparent 80%),
+    linear-gradient(135deg, #040412 0%, #060820 40%, #080618 70%, #04040E 100%);
+  animation: nebulaPulse 8s ease-in-out infinite alternate;
+}
+@keyframes nebulaPulse {
+  from { filter: brightness(1) saturate(1); }
+  to   { filter: brightness(1.1) saturate(1.2); }
+}
+#screen-team-select .inner-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.04;
+  animation: starField 20s linear infinite;
+}
+@keyframes starField {
+  from { background-position: 0 0; }
+  to   { background-position: 60px 60px; }
+}
+
+/* ── IMPROVED TEAM CARDS ─────────────────────────────────────────────────── */
+.teams-grid {
+  padding: 28px 28px !important;
+  gap: 18px !important;
+}
+.team-card {
+  border-radius: 22px !important;
+  background: rgba(10,12,35,0.65) !important;
+  border: 1.5px solid rgba(255,255,255,0.06) !important;
+  backdrop-filter: blur(20px) saturate(140%) !important;
+  transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1) !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05) !important;
+}
+.team-card:hover {
+  transform: translateY(-10px) scale(1.03) !important;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7), 0 0 0 1px var(--t-c,rgba(245,158,11,0.4)), 0 0 40px var(--t-glow,rgba(245,158,11,0.25)) !important;
+}
+.tc-banner {
+  height: 90px !important;
+  font-size: 44px !important;
+}
+.tc-short {
+  font-size: 22px !important;
+  letter-spacing: 2px !important;
+  background: linear-gradient(135deg, #fff, rgba(245,158,11,0.8));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.tpb {
+  background: rgba(4,4,18,0.95) !important;
+  border-top: 1px solid rgba(245,158,11,0.15) !important;
+  padding: 18px 28px !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SETUP SCREEN — TEAL CYBER-GRID BACKGROUND
+   ═══════════════════════════════════════════════════════════════════════════ */
+#screen-setup .inner-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(6,182,212,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 80% at 0% 100%, rgba(16,185,129,0.10) 0%, transparent 60%),
+    linear-gradient(160deg, #03080F 0%, #040E12 50%, #03080A 100%);
+}
+#screen-setup .inner-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(6,182,212,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6,182,212,0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+  animation: gridScroll 15s linear infinite;
+}
+#screen-setup .inner-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(6,182,212,0.04) 0%, transparent 70%);
+  animation: gridPulse 4s ease-in-out infinite alternate;
+}
+@keyframes gridScroll {
+  from { background-position: 0 0, 0 0; }
+  to   { background-position: 48px 48px, 48px 48px; }
+}
+@keyframes gridPulse {
+  from { opacity: 0.5; }
+  to   { opacity: 1; }
+}
+
+/* ── IMPROVED SETUP CARDS & FORM ─────────────────────────────────────────── */
+.setup-body {
+  padding: 28px 32px 140px !important;
+}
+.setup-sec {
+  margin-bottom: 34px !important;
+}
+.setup-lbl {
+  font-size: 12px !important;
+  letter-spacing: 3px !important;
+  color: #06B6D4 !important;
+  margin-bottom: 14px !important;
+}
+.setup-lbl::after {
+  background: linear-gradient(90deg, rgba(6,182,212,0.3), transparent) !important;
+}
+.mode-grid {
+  gap: 14px !important;
+}
+.mode-card {
+  border-radius: 18px !important;
+  padding: 22px 16px !important;
+  background: rgba(6,18,38,0.6) !important;
+  border: 1.5px solid rgba(6,182,212,0.08) !important;
+  backdrop-filter: blur(16px) !important;
+  transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04) !important;
+}
+.mode-card::before {
+  background: radial-gradient(ellipse at 50% 0%, rgba(6,182,212,0.12), transparent 70%) !important;
+}
+.mode-card:hover {
+  border-color: rgba(6,182,212,0.4) !important;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.5), 0 0 20px rgba(6,182,212,0.1) !important;
+  transform: translateY(-4px) scale(1.02) !important;
+}
+.mode-card.selected {
+  border-color: #06B6D4 !important;
+  box-shadow: 0 0 0 1px rgba(6,182,212,0.4), 0 0 30px rgba(6,182,212,0.15), 0 8px 24px rgba(0,0,0,0.4) !important;
+}
+.mc-i { font-size: 32px !important; margin-bottom: 10px !important; }
+.mc-n { font-size: 16px !important; color: #E2E8F0 !important; }
+.pill.active, .pill:hover {
+  background: rgba(6,182,212,0.1) !important;
+  border-color: rgba(6,182,212,0.4) !important;
+  color: #06B6D4 !important;
+}
+.dtab.active {
+  border-color: #06B6D4 !important;
+  color: #06B6D4 !important;
+  background: rgba(6,182,212,0.08) !important;
+}
+.inp:focus {
+  border-color: #06B6D4 !important;
+  box-shadow: 0 0 0 3px rgba(6,182,212,0.12) !important;
+}
+
+/* "Start Match!" premium button in setup */
+.setup-start .btn-start {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding: 18px;
+  font-size: 18px;
+  letter-spacing: 3px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 800;
+  background: linear-gradient(135deg, #F59E0B, #D97706 50%, #F59E0B);
+  background-size: 200% 100%;
+  color: #000;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 6px 30px rgba(245,158,11,0.5), 0 2px 0 rgba(255,255,255,0.1) inset;
+  transition: all 0.3s;
+  animation: btnGradShift 3s linear infinite;
+}
+.setup-start .btn-start::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: btnShine 2.5s infinite;
+}
+@keyframes btnGradShift {
+  0%   { background-position: 0% 0%; }
+  50%  { background-position: 100% 0%; }
+  100% { background-position: 0% 0%; }
+}
+@keyframes btnShine {
+  0%   { left: -100%; }
+  100% { left: 200%; }
+}
+.setup-start .btn-start:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(245,158,11,0.7);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCHEDULE SCREEN — STADIUM AERIAL AURORA BACKGROUND
+   ═══════════════════════════════════════════════════════════════════════════ */
+#screen-schedule .inner-bg {
+  background:
+    radial-gradient(ellipse 100% 60% at 50% 100%, rgba(20,80,20,0.20) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 30% at 20% 10%, rgba(245,158,11,0.10) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 30% at 80% 10%, rgba(59,130,246,0.08) 0%, transparent 50%),
+    linear-gradient(180deg, #040812 0%, #050D10 50%, #040A08 100%);
+  overflow: hidden;
+}
+#screen-schedule .inner-bg::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: min(120vw, 900px);
+  height: min(70vh, 450px);
+  border-radius: 50% 50% 0 0;
+  border: 1px solid rgba(34,197,94,0.06);
+  background: radial-gradient(ellipse at 50% 80%, rgba(34,197,94,0.04), transparent 70%);
+  animation: fieldGlow 6s ease-in-out infinite alternate;
+}
+#screen-schedule .inner-bg::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: min(60vw, 500px);
+  height: min(45vh, 280px);
+  border-radius: 50% 50% 0 0;
+  border: 1px solid rgba(34,197,94,0.08);
+  box-shadow: 0 0 60px rgba(34,197,94,0.06) inset;
+  animation: fieldGlow 6s ease-in-out infinite alternate-reverse;
+}
+@keyframes fieldGlow {
+  from { opacity: 0.5; }
+  to   { opacity: 1; filter: brightness(1.3); }
+}
+
+/* ── IMPROVED FIXTURE CARDS ──────────────────────────────────────────────── */
+.fixture-card {
+  background: rgba(8,14,30,0.8) !important;
+  border: 1px solid rgba(255,255,255,0.07) !important;
+  border-radius: 22px !important;
+  backdrop-filter: blur(24px) saturate(150%) !important;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04) !important;
+  transition: all 0.3s cubic-bezier(0.34,1.2,0.64,1) !important;
+}
+.fixture-card:hover {
+  transform: translateY(-6px) !important;
+  border-color: rgba(245,158,11,0.3) !important;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 30px rgba(245,158,11,0.12) !important;
+}
+.fix-teams-vs {
+  background: rgba(0,0,0,0.35) !important;
+  border-radius: 16px !important;
+  padding: 18px !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+}
+.fix-logo {
+  border-radius: 14px !important;
+  width: 52px !important;
+  height: 52px !important;
+  border: 2px solid rgba(255,255,255,0.1) !important;
+  background: rgba(0,0,0,0.5) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) !important;
+}
+.fix-tname {
+  font-size: 18px !important;
+  letter-spacing: 2px !important;
+}
+.btn-play-match {
+  border-radius: 14px !important;
+  font-size: 14px !important;
+  padding: 12px 20px !important;
+  background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05)) !important;
+  border: 1px solid rgba(245,158,11,0.3) !important;
+  color: var(--gold) !important;
+  transition: all 0.2s !important;
+}
+.btn-play-match:hover {
+  background: rgba(245,158,11,0.25) !important;
+  border-color: rgba(245,158,11,0.6) !important;
+  box-shadow: 0 0 20px rgba(245,158,11,0.2) !important;
+}
+
+/* Standings table improvements */
+.standings-card {
+  background: rgba(8,14,30,0.8) !important;
+  border-radius: 22px !important;
+  border: 1px solid rgba(255,255,255,0.07) !important;
+  backdrop-filter: blur(24px) !important;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5) !important;
+  overflow: hidden !important;
+}
+.standings-table th {
+  background: rgba(245,158,11,0.06) !important;
+  font-size: 11px !important;
+  letter-spacing: 2px !important;
+}
+.standings-table td { font-size: 14px !important; }
+.leader-row { background: rgba(245,158,11,0.06) !important; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CODE ARENA — MATRIX / DEEP OCEAN DARK CODE BACKGROUND
+   ═══════════════════════════════════════════════════════════════════════════ */
+#screen-code-arena .inner-bg {
+  background:
+    radial-gradient(ellipse 60% 50% at 0% 50%, rgba(16,185,129,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 100% 30%, rgba(59,130,246,0.06) 0%, transparent 60%),
+    linear-gradient(160deg, #020408 0%, #030A10 50%, #020406 100%);
+}
+#screen-code-arena .inner-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(16,185,129,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16,185,129,0.04) 1px, transparent 1px);
+  background-size: 32px 22px;
+  mask-image: linear-gradient(180deg, transparent, rgba(0,0,0,0.3) 20%, rgba(0,0,0,0.3) 80%, transparent);
+}
+#screen-code-arena .inner-bg::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 50%;
+  height: 100%;
+  background: radial-gradient(ellipse 80% 60% at 60% 30%, rgba(59,130,246,0.04), transparent 70%);
+}
+
+/* Improved code editor panels */
+.problem-pane {
+  background: rgba(6,10,24,0.92) !important;
+  border-right: 1px solid rgba(255,255,255,0.05) !important;
+}
+.cp-title {
+  font-size: 26px !important;
+  font-weight: 800 !important;
+  background: linear-gradient(135deg, #fff, rgba(16,185,129,0.8));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.example-box {
+  border-left: 3px solid rgba(16,185,129,0.3) !important;
+  background: rgba(16,185,129,0.03) !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(16,185,129,0.1) !important;
+}
+.editor-toolbar {
+  background: rgba(8,14,30,0.97) !important;
+  border-bottom: 1px solid rgba(16,185,129,0.08) !important;
+}
+.editor-pane { background: #020408 !important; }
+.editor-wrapper { background: #030609 !important; }
+.line-gutter { background: #010204 !important; }
+.code-lang-sel {
+  background: rgba(8,18,38,0.95) !important;
+  border: 1px solid rgba(16,185,129,0.3) !important;
+  color: #10B981 !important;
+  border-radius: 12px !important;
+}
+.console-pane {
+  background: #010305 !important;
+  border-top: 1px solid rgba(16,185,129,0.08) !important;
+}
+.console-hdr {
+  background: rgba(6,10,24,0.9) !important;
+  border-bottom: 1px solid rgba(16,185,129,0.06) !important;
+}
+.console-ttl { color: #10B981 !important; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HOW TO PLAY — TROPHY HALL / GOLDEN AURORA BACKGROUND
+   ═══════════════════════════════════════════════════════════════════════════ */
+#screen-how-to-play .inner-bg {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(245,158,11,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(251,191,36,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 60% at 90% 80%, rgba(251,191,36,0.06) 0%, transparent 50%),
+    linear-gradient(180deg, #0A070000 0%, #08060000 40%, #06040000 100%),
+    linear-gradient(180deg, #050306 0%, #080510 50%, #040306 100%);
+  animation: trophyAurora 8s ease-in-out infinite alternate;
+}
+@keyframes trophyAurora {
+  from { filter: brightness(1); }
+  to   { filter: brightness(1.15) saturate(1.1); }
+}
+#screen-how-to-play .inner-bg::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(245,158,11,0.15), transparent 50%, rgba(245,158,11,0.05));
+}
+
+/* ── IMPROVED HOW-TO-PLAY CARDS ─────────────────────────────────────────── */
+.htp-intro {
+  background: rgba(245,158,11,0.04) !important;
+  border: 1px solid rgba(245,158,11,0.15) !important;
+  border-left: 4px solid var(--gold) !important;
+  border-radius: 16px !important;
+  padding: 20px 24px !important;
+  font-size: 15px !important;
+  line-height: 1.9 !important;
+}
+.rules-grid {
+  gap: 16px !important;
+}
+.rule-card {
+  border-radius: 20px !important;
+  padding: 28px 22px !important;
+  backdrop-filter: blur(20px) saturate(150%) !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04) !important;
+  transition: all 0.3s cubic-bezier(0.34,1.4,0.64,1) !important;
+}
+.rule-card:hover {
+  transform: translateY(-8px) scale(1.02) !important;
+}
+.r-num {
+  font-size: 52px !important;
+  margin-bottom: 10px !important;
+}
+.r-t { font-size: 20px !important; }
+.htp-m {
+  background: rgba(8,10,28,0.65) !important;
+  border-radius: 16px !important;
+  backdrop-filter: blur(16px) !important;
+  padding: 18px 20px !important;
+  transition: all 0.25s !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04) !important;
+}
+.htp-m:hover {
+  transform: translateX(6px) !important;
+  border-color: rgba(245,158,11,0.3) !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 0 20px rgba(245,158,11,0.06) !important;
+}
+.htp-m > span { font-size: 30px !important; }
+.htp-m b { font-size: 17px !important; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GAME SCREEN — NIGHT STADIUM THUNDERSTORM EFFECT
+   ═══════════════════════════════════════════════════════════════════════════ */
+#screen-game .inner-bg {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(20,80,20,0.15) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 30% at 30% 20%, rgba(59,130,246,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 30% at 70% 20%, rgba(245,158,11,0.05) 0%, transparent 50%),
+    linear-gradient(180deg, #030408 0%, #040812 50%, #030508 100%);
+}
+
+/* ── IMPROVED SCOREBOARD ─────────────────────────────────────────────────── */
+.scoreboard {
+  background: rgba(3,4,14,0.9) !important;
+  backdrop-filter: blur(30px) saturate(160%) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.7) !important;
+  padding: 16px 28px !important;
+}
+.scoreboard::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(245,158,11,0.3), transparent);
+}
+.sb-runs {
+  font-size: 38px !important;
+  background: linear-gradient(135deg, #FCD34D, #F59E0B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.team-badge {
+  font-size: 14px !important;
+  padding: 8px 16px !important;
+  border-radius: 12px !important;
+}
+
+/* ── IMPROVED QUESTION AREA ──────────────────────────────────────────────── */
+.q-text {
+  font-size: 20px !important;
+  line-height: 1.7 !important;
+  font-weight: 500 !important;
+  color: #F1F5F9 !important;
+  padding: 20px !important;
+  background: rgba(255,255,255,0.02) !important;
+  border: 1px solid rgba(255,255,255,0.05) !important;
+  border-radius: 16px !important;
+  margin-bottom: 20px !important;
+}
+.opt-btn {
+  border-radius: 16px !important;
+  padding: 18px 20px !important;
+  font-size: 14px !important;
+  backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(255,255,255,0.07) !important;
+  background: rgba(10,15,40,0.6) !important;
+  transition: all 0.2s cubic-bezier(0.34,1.4,0.64,1) !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3) !important;
+}
+.opt-btn:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.01) !important;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.4), 0 0 16px rgba(245,158,11,0.1) !important;
+}
+.opt-letter {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+}
+.expl-box {
+  border-radius: 18px !important;
+  padding: 22px 24px !important;
+  background: rgba(8,14,35,0.9) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
+}
+
+/* ── IMPROVED RESULTS SCREEN ─────────────────────────────────────────────── */
+#screen-results .inner-bg {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 20%, rgba(245,158,11,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 20% 80%, rgba(34,197,94,0.06) 0%, transparent 50%),
+    linear-gradient(180deg, #060408 0%, #08060C 50%, #050408 100%);
+  animation: victoryGlow 3s ease-in-out infinite alternate;
+}
+@keyframes victoryGlow {
+  from { filter: brightness(1); }
+  to   { filter: brightness(1.12); }
+}
+
+.sc-row {
+  background: rgba(8,14,30,0.7) !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+  border-left: 4px solid var(--gold) !important;
+  backdrop-filter: blur(16px) !important;
+  padding: 16px 20px !important;
+  transition: all 0.2s !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+}
+.sc-row:hover {
+  transform: translateX(4px) !important;
+  border-left-color: #FCD34D !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   IMPROVED SECTION LABELS (shared across all inner screens)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.schedule-body .sec-lbl,
+.page-body .sec-lbl {
+  font-size: 12px !important;
+  letter-spacing: 3px !important;
+  background: linear-gradient(90deg, var(--gold), rgba(245,158,11,0.5));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SETUP EXPLORE STRIP — IMPROVED
+   ═══════════════════════════════════════════════════════════════════════════ */
+.setup-explore {
+  background: rgba(6,182,212,0.03) !important;
+  border: 1px solid rgba(6,182,212,0.1) !important;
+  border-radius: 18px !important;
+  padding: 22px 24px !important;
+}
+.btn-explore {
+  border-radius: 14px !important;
+  border: 1px solid rgba(6,182,212,0.12) !important;
+  background: rgba(6,182,212,0.04) !important;
+  color: #94A3B8 !important;
+  font-size: 13px !important;
+  padding: 14px 20px !important;
+}
+.btn-explore:hover {
+  border-color: rgba(6,182,212,0.4) !important;
+  color: #06B6D4 !important;
+  background: rgba(6,182,212,0.08) !important;
+  box-shadow: 0 4px 20px rgba(6,182,212,0.12) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FILTER CHIPS IN SCHEDULE
+   ═══════════════════════════════════════════════════════════════════════════ */
+.filter-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+.chip {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #64748B;
+  padding: 6px 16px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Rajdhani', sans-serif;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+.chip:hover, .chip.active {
+  background: rgba(245,158,11,0.1);
+  border-color: rgba(245,158,11,0.4);
+  color: var(--gold);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MATCH MODE TOGGLE — IMPROVED
+   ═══════════════════════════════════════════════════════════════════════════ */
+.match-mode-toggle {
+  background: rgba(0,0,0,0.5) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 99px !important;
+  padding: 4px !important;
+}
+.mmt-btn {
+  font-size: 12px !important;
+  padding: 5px 14px !important;
+  border-radius: 99px !important;
+  letter-spacing: 0.5px !important;
+  transition: all 0.25s !important;
+}
+.mmt-btn.active {
+  background: linear-gradient(135deg, #F59E0B, #D97706) !important;
+  color: #000 !important;
+  box-shadow: 0 2px 12px rgba(245,158,11,0.5) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PAGE ENTER ANIMATION — IMPROVED
+   ═══════════════════════════════════════════════════════════════════════════ */
+@keyframes pgIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.screen.active { animation: pgIn 0.5s cubic-bezier(0.34,1.2,0.64,1) both; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GLOW BORDER UTILITY
+   ═══════════════════════════════════════════════════════════════════════════ */
+.glow-border {
+  box-shadow: 0 0 0 1px rgba(245,158,11,0.2), 0 0 20px rgba(245,158,11,0.08);
+}
+
+/* ── SCROLLBAR STYLING ──────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+::-webkit-scrollbar-thumb { background: rgba(245,158,11,0.25); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(245,158,11,0.45); }
