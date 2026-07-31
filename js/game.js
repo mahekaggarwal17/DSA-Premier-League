@@ -54,9 +54,12 @@ function spawnParticles(){
 function renderTeams(){
   const g=document.getElementById('teams-grid'); g.innerHTML='';
   TEAMS.forEach((t,i)=>{
-    const d=document.createElement('div');
+    const d=document.createElement('button');
+    d.type='button';
     d.className='ts-team-tile';
     d.dataset.id=t.id;
+    d.setAttribute('aria-label',`Select ${t.name}`);
+    d.setAttribute('aria-pressed',String(G.team?.id===t.id));
     d.style.setProperty('--tc',t.primary);
     d.style.setProperty('--tg',t.glow);
     d.style.animationDelay=`${i*0.06}s`;
@@ -71,6 +74,7 @@ function renderTeams(){
     d.onclick=()=>pickTeam(t.id);
     g.appendChild(d);
   });
+  if(G.team) pickTeam(G.team.id);
 }
 
 function pickTeam(id){
@@ -80,6 +84,7 @@ function pickTeam(id){
   // Update tile states
   document.querySelectorAll('.ts-team-tile').forEach(c=>{
     c.classList.toggle('selected',c.dataset.id===id);
+    c.setAttribute('aria-pressed',String(c.dataset.id===id));
   });
 
   // Animate spotlight
@@ -95,7 +100,7 @@ function pickTeam(id){
 
   // Update decor rings color
   document.querySelectorAll('.ts-decor-ring').forEach(r=>{
-    r.style.borderColor=t.primary.replace(')',',0.15)').replace('rgb','rgba').replace('#',`color-mix(in srgb, ${t.primary} 20%, transparent)`);
+    r.style.borderColor=`color-mix(in srgb, ${t.primary} 22%, transparent)`;
   });
 
   // Logo
@@ -121,6 +126,7 @@ function pickTeam(id){
   document.getElementById('ts-b-city').style.color=t.primary;
   document.getElementById('ts-b-rank').textContent=`#${TEAMS.findIndex(x=>x.id===id)+1} in League`;
   document.getElementById('ts-b-lang').textContent='⚡ 7 Languages';
+  document.getElementById('ts-selection-note').textContent=`${t.shortName} selected — you're ready for match setup.`;
 
   // Activate join button
   const btn=document.getElementById('ts-join-btn');

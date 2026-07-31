@@ -213,9 +213,9 @@
     <button class="btn-back" onclick="showScreen('landing')">← Back</button>
     <div class="ts-topbar-title">
       <span class="ts-topbar-ico">🏟️</span>
-      <span>Choose Your Team</span>
+      <span>Build Your Starting XI</span>
     </div>
-    <div class="ts-topbar-step">Step 1 of 3</div>
+    <div class="ts-topbar-step"><span>Step 1</span> Team selection</div>
   </div>
 
   <div class="ts-layout">
@@ -224,6 +224,7 @@
     <div class="ts-hero-panel" id="ts-hero-panel">
       <div class="ts-hero-spotlight" id="ts-spotlight"></div>
       <div class="ts-hero-content">
+        <div class="ts-kicker"><span class="ts-kicker-dot"></span> Your club identity</div>
         <div class="ts-hero-logo" id="ts-hero-logo">🏆</div>
         <div class="ts-hero-shortname" id="ts-hero-shortname">—</div>
         <div class="ts-hero-fullname" id="ts-hero-fullname">Select a Team</div>
@@ -234,6 +235,7 @@
           <div class="ts-badge ts-badge-rank" id="ts-b-rank">Rank #—</div>
           <div class="ts-badge ts-badge-lang" id="ts-b-lang">Ready to Code</div>
         </div>
+        <p class="ts-selection-note" id="ts-selection-note">Choose a club to unlock match setup.</p>
         <button class="ts-join-btn" id="ts-join-btn" onclick="confirmTeam()" disabled>
           <span class="ts-join-shine"></span>
           <span class="ts-join-ico">🏏</span>
@@ -251,8 +253,11 @@
     <!-- RIGHT: TEAM GRID -->
     <div class="ts-grid-panel">
       <div class="ts-grid-hdr">
-        <span class="ts-grid-count">8 Teams · Pick Yours</span>
-        <span class="ts-grid-hint">Tap to preview ·  select to join</span>
+        <div>
+          <span class="ts-grid-count">Choose your club</span>
+          <span class="ts-grid-subtitle">Eight teams. One badge to wear.</span>
+        </div>
+        <span class="ts-grid-hint">Select to preview</span>
       </div>
       <div class="ts-teams-grid" id="teams-grid"></div>
     </div>

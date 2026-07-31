@@ -49,6 +49,7 @@
   padding: 5px 14px;
   border-radius: 99px;
 }
+.ts-topbar-step span { color: var(--gold, #F59E0B); }
 
 /* ── SPLIT LAYOUT ─────────────────────────────────────────────────────────── */
 .ts-layout {
@@ -63,7 +64,7 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 .ts-hero-panel {
   position: relative;
-  background: rgba(6,8,24,0.95);
+  background: linear-gradient(155deg, rgba(14, 20, 50, 0.98), rgba(5, 7, 22, 0.96));
   border-right: 1px solid rgba(255,255,255,0.06);
   display: flex;
   align-items: center;
@@ -124,6 +125,23 @@
   align-items: center;
   gap: 10px;
   width: 100%;
+}
+.ts-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: #94A3B8;
+  font: 700 11px/1 'Inter', sans-serif;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.ts-kicker-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 99px;
+  background: #F59E0B;
+  box-shadow: 0 0 12px #F59E0B;
 }
 
 /* Entrance animation on team pick */
@@ -202,6 +220,12 @@
   border-radius: 99px;
   backdrop-filter: blur(8px);
   margin: 4px 0 8px;
+}
+.ts-selection-note {
+  min-height: 18px;
+  margin: 0 0 2px;
+  color: #64748B;
+  font: 500 12px/1.4 'Inter', sans-serif;
 }
 
 /* Info badges row */
@@ -289,7 +313,7 @@
    RIGHT GRID PANEL
    ═══════════════════════════════════════════════════════════════════════════ */
 .ts-grid-panel {
-  background: rgba(3,4,16,0.92);
+  background: linear-gradient(145deg, rgba(6, 9, 25, 0.9), rgba(3,4,16,0.98));
   overflow-y: auto;
   padding: 24px 28px 40px;
   display: flex;
@@ -309,7 +333,16 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: rgba(245,158,11,0.7);
+  color: #F8FAFC;
+  display: block;
+}
+.ts-grid-subtitle {
+  display: block;
+  margin-top: 5px;
+  color: #64748B;
+  font: 500 12px/1.4 'Inter', sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
 }
 .ts-grid-hint {
   font-family: 'Inter', sans-serif;
@@ -327,6 +360,10 @@
 }
 
 .ts-team-tile {
+  appearance: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
   position: relative;
   background: rgba(10,14,36,0.8);
   border: 1.5px solid rgba(255,255,255,0.06);
@@ -337,6 +374,10 @@
   animation: tileIn 0.5s cubic-bezier(0.34,1.4,0.64,1) both;
   backdrop-filter: blur(16px);
   box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.ts-team-tile:focus-visible {
+  outline: 3px solid rgba(255,255,255,0.9);
+  outline-offset: 3px;
 }
 @keyframes tileIn {
   from { opacity: 0; transform: translateY(20px) scale(0.92); }
@@ -478,4 +519,32 @@
   .ts-hero-panel { min-height: 360px; }
   .ts-grid-panel { max-height: 60vh; }
   .ts-teams-grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 620px) {
+  .ts-topbar { padding: 13px 16px; gap: 8px; }
+  .ts-topbar-title { font-size: 16px; letter-spacing: 1px; }
+  .ts-topbar-step { padding: 5px 8px; font-size: 9px; letter-spacing: .6px; }
+  .ts-topbar-step span { display: none; }
+  .ts-layout { height: auto; }
+  .ts-hero-panel { min-height: 335px; }
+  .ts-hero-content { padding: 26px 18px; gap: 8px; }
+  .ts-hero-logo { width: 92px; height: 92px; border-radius: 23px; }
+  .ts-hero-logo img { width: 70px; height: 70px; }
+  .ts-hero-shortname { font-size: 42px; }
+  .ts-hero-fullname { font-size: 20px; }
+  .ts-hero-tagline { max-width: 100%; padding: 8px 13px; font-size: 12px; }
+  .ts-badge { padding: 5px 9px; font-size: 10px; }
+  .ts-join-btn { max-width: 100%; padding: 15px 20px; }
+  .ts-grid-panel { max-height: none; padding: 22px 16px 32px; }
+  .ts-grid-hdr { margin-bottom: 16px; }
+  .ts-grid-hint { display: none; }
+  .ts-teams-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .ts-tile-inner { padding: 16px 8px 14px; }
+  .ts-tile-logo { width: 54px; height: 54px; }
+  .ts-tile-logo img { width: 43px; height: 43px; }
+  .ts-tile-code { font-size: 17px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ts-team-tile, .ts-hero-panel.ts-hero-entered .ts-hero-content, .ts-decor-ring, .ts-join-shine { animation: none; }
+  .ts-team-tile, .ts-join-btn { transition-duration: .01ms; }
 }
